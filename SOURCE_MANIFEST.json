@@ -3,16 +3,16 @@
   "driver_donor": "a35358a5f06996e771911904223274e3fb57b9c4",
   "status": "experimental; ARM build and hardware not yet validated",
   "overlay": {
-    "libraries/AP_Airspeed/AP_Airspeed.cpp": "31e0a6e686355497ced063a6c25312d7d518f55c6f0ebd4c2d0ce0f0ad230347",
-    "libraries/AP_Airspeed/AP_Airspeed.h": "89e7d8f97a51a686f334fcaf4765966088302228c091841f747e333f52a0b853",
-    "libraries/AP_Airspeed/AP_Airspeed_Backend.h": "d3ec52556b8037da0a156c8958ea966f826e6af4da3f3f5e9981bf715cb35424",
-    "libraries/AP_Airspeed/AP_Airspeed_Params.cpp": "9a537a60b5ce80d6ad5456b076e699b4b8696079b82eb2daa9c8e78c4786abed",
-    "libraries/AP_Airspeed/AP_Airspeed_config.h": "75a5040f344460304a945596e757cabe8e6cee92f5df2155d6fc9b65ed0e441f",
-    "libraries/AP_Airspeed/AP_Airspeed_External.cpp": "e9eaf9a8b1740dadff2226fb31d3623c6d89c8ec8412bcdcdc62651f37877468",
-    "libraries/AP_Airspeed/AP_Airspeed_External.h": "a138783cd8a5dcb0697aed51754e007080a3841586911b67774234fb267e8a43",
-    "libraries/AP_ExternalAHRS/AP_ExternalAHRS.cpp": "bb99c27b15928acbd8a400ea88a548930b6a2b7978f5a12f1ff67e120d9a27fc",
-    "libraries/AP_ExternalAHRS/AP_ExternalAHRS.h": "cad44f457e75dfe89d92d11ce895c5c67279a3b1c45e03082ccedcc79623b0c0",
-    "libraries/AP_ExternalAHRS/AP_ExternalAHRS_HITL.cpp": "9aa30caddc3a6ef8b0496ea0c57f2480a277eda5766ddc6cb7c935bb230164a6",
-    "libraries/AP_ExternalAHRS/AP_ExternalAHRS_HITL.h": "0b28a727cb27d3618cfbdaefbe66a374f48ba42294ce23d11b16faa328bf4861"
+    "libraries/AP_Airspeed/AP_Airspeed.cpp": "770a50a9ea3088ccc2d1e7f368c6adceb6dc310e2f8dd26ede5450921bf3936f",
+    "libraries/AP_Airspeed/AP_Airspeed.h": "5c6780939382c61a2ee2229a014f51d5235f7709d23bc41f032da84f1236e1b2",
+    "libraries/AP_Airspeed/AP_Airspeed_Backend.h": "486cd7230e09f01fa22006e6e4c747f49179ba405cfd6646ae46b1f33061ad0d",
+    "libraries/AP_Airspeed/AP_Airspeed_Params.cpp": "fcfe75d07818ce3023f6c7580f12cab33cc467b93e29245f9d0c481e506deb7b",
+    "libraries/AP_Airspeed/AP_Airspeed_config.h": "440b67425d86227b4f1838181760b75b048846c7beb897f74f871affbf444812",
+    "libraries/AP_Airspeed/AP_Airspeed_External.cpp": "baeeac6d979f1b54251bc2235d315f10d15357bfa564966fa9703c256fe71ad4",
+    "libraries/AP_Airspeed/AP_Airspeed_External.h": "d05ec50105193ba6e7ec16bfc9f4678a4609db80ccfe969dd640ab593ecc545d",
+    "libraries/AP_ExternalAHRS/AP_ExternalAHRS.cpp": "5dafda915b2a7e2ab3fda2ee44f9ee850bb5793b868bf615080ae108c3b97b79",
+    "libraries/AP_ExternalAHRS/AP_ExternalAHRS.h": "7869733a934b9f57ed84366a0a38e31b2d008f2a2c2d5c536b62031e8632ce45",
+    "libraries/AP_ExternalAHRS/AP_ExternalAHRS_HITL.cpp": "ba3ecbc03fc991e1865ad8885623080b3c8e23af21e450e1dea80d15debae036",
+    "libraries/AP_ExternalAHRS/AP_ExternalAHRS_HITL.h": "83fa4da262dcbb0ffc8e5e7c87ba8b03f3bbff340a6a0a33549fe751e1113a86"
   }
 }

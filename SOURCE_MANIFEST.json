@@ -1,0 +1,18 @@
+{
+  "official_base": "def89ea600e9165ac9d7286758c741d03aac4020",
+  "driver_donor": "a35358a5f06996e771911904223274e3fb57b9c4",
+  "status": "experimental; ARM build and hardware not yet validated",
+  "overlay": {
+    "libraries/AP_Airspeed/AP_Airspeed.cpp": "31e0a6e686355497ced063a6c25312d7d518f55c6f0ebd4c2d0ce0f0ad230347",
+    "libraries/AP_Airspeed/AP_Airspeed.h": "89e7d8f97a51a686f334fcaf4765966088302228c091841f747e333f52a0b853",
+    "libraries/AP_Airspeed/AP_Airspeed_Backend.h": "d3ec52556b8037da0a156c8958ea966f826e6af4da3f3f5e9981bf715cb35424",
+    "libraries/AP_Airspeed/AP_Airspeed_Params.cpp": "9a537a60b5ce80d6ad5456b076e699b4b8696079b82eb2daa9c8e78c4786abed",
+    "libraries/AP_Airspeed/AP_Airspeed_config.h": "75a5040f344460304a945596e757cabe8e6cee92f5df2155d6fc9b65ed0e441f",
+    "libraries/AP_Airspeed/AP_Airspeed_External.cpp": "e9eaf9a8b1740dadff2226fb31d3623c6d89c8ec8412bcdcdc62651f37877468",
+    "libraries/AP_Airspeed/AP_Airspeed_External.h": "a138783cd8a5dcb0697aed51754e007080a3841586911b67774234fb267e8a43",
+    "libraries/AP_ExternalAHRS/AP_ExternalAHRS.cpp": "bb99c27b15928acbd8a400ea88a548930b6a2b7978f5a12f1ff67e120d9a27fc",
+    "libraries/AP_ExternalAHRS/AP_ExternalAHRS.h": "cad44f457e75dfe89d92d11ce895c5c67279a3b1c45e03082ccedcc79623b0c0",
+    "libraries/AP_ExternalAHRS/AP_ExternalAHRS_HITL.cpp": "9aa30caddc3a6ef8b0496ea0c57f2480a277eda5766ddc6cb7c935bb230164a6",
+    "libraries/AP_ExternalAHRS/AP_ExternalAHRS_HITL.h": "0b28a727cb27d3618cfbdaefbe66a374f48ba42294ce23d11b16faa328bf4861"
+  }
+}

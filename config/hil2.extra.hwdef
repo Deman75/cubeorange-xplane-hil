@@ -1,0 +1,5 @@
+# Bench prototype only. Keep primary USB MAVLink, use second USB CDC for HIL.
+define HAL_EXTERNAL_AHRS_ENABLED 1
+define HAL_EXTERNAL_AHRS_HITL_ENABLED 1
+define AP_AIRSPEED_EXTERNAL_ENABLED 1
+define HAL_OTG2_PROTOCOL SerialProtocol_AHRS

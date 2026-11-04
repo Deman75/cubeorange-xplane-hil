@@ -1,0 +1,83 @@
+name: Build Cube Orange HIL2
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  firmware:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - name: Checkout firmware overlay
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Checkout pinned official ArduPilot
+        uses: actions/checkout@v4
+        with:
+          repository: ArduPilot/ardupilot
+          ref: def89ea600e9165ac9d7286758c741d03aac4020
+          path: upstream
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Verify and apply firmware-only overlay
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, shutil
+          from pathlib import Path
+          manifest = json.loads(Path('SOURCE_MANIFEST.json').read_text())
+          for name, expected in manifest['overlay'].items():
+              source = Path('overlay') / name
+              assert name.startswith(('libraries/AP_ExternalAHRS/', 'libraries/AP_Airspeed/'))
+              assert '..' not in Path(name).parts
+              assert hashlib.sha256(source.read_bytes()).hexdigest() == expected, name
+              dest = Path('upstream') / name
+              dest.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copyfile(source, dest)
+          assert 'AP_Simulink' not in Path('upstream/ArduPlane/wscript').read_text()
+          PY
+
+      - name: Install build dependencies
+        shell: bash
+        env:
+          SKIP_AP_GRAPHIC_ENV: '1'
+          SKIP_AP_COV_ENV: '1'
+          SKIP_AP_EXT_ENV: '1'
+          SKIP_AP_COMPLETION_ENV: '1'
+          SKIP_AP_GIT_CHECK: '1'
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          cd upstream
+          Tools/environment_install/install-prereqs-ubuntu.sh -y 2>&1 | tee ../artifacts/dependencies.log
+          # ArduPlane 4.4 uses the Empy 3 API, incompatible with Empy 4.
+          python3 -m pip install --user 'empy==3.3.4'
+
+      - name: Build firmware without uploading
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="/opt/gcc-arm-none-eabi-10-2020-q4-major/bin:$HOME/.local/bin:$PATH"
+          cd upstream
+          arm-none-eabi-g++ --version
+          ./waf configure --board CubeOrange --extra-hwdef="$GITHUB_WORKSPACE/config/hil2.extra.hwdef" 2>&1 | tee ../artifacts/configure.log
+          ./waf plane -j2 2>&1 | tee ../artifacts/build.log
+          cp build/CubeOrange/bin/arduplane.apj ../artifacts/CubeOrange-HIL2-EXPERIMENTAL.apj
+          cp ../SOURCE_MANIFEST.json ../artifacts/
+          sha256sum ../artifacts/CubeOrange-HIL2-EXPERIMENTAL.apj > ../artifacts/firmware.sha256
+
+      - name: Save firmware and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: CubeOrange-HIL2-EXPERIMENTAL
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 14

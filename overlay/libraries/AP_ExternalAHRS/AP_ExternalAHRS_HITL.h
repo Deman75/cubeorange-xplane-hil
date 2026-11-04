@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AP_ExternalAHRS_backend.h"
+#include <stddef.h>
 
 #ifndef HAL_EXTERNAL_AHRS_HITL_ENABLED
 #define HAL_EXTERNAL_AHRS_HITL_ENABLED HAL_EXTERNAL_AHRS_ENABLED
@@ -49,12 +50,25 @@ private:
             .fix_type = GPS_FIX_TYPE_NO_FIX
         };
         AP_ExternalAHRS::ins_data_message_t ins{
-            .accel = Vector3f(0, 0, -1000)
+            .accel = Vector3f(0, 0, -9.80665f)
         };
         AP_ExternalAHRS::airspeed_data_message_t aspd{};
         float q1, q2, q3, q4;
         EFI_State efi{};
     } ahrs_msg;
+    using SensorWire = decltype(ahrs_msg);
+
+    // HIL2 uses native little-endian records: enforce the same layout on ARM and Windows.
+    static_assert(sizeof(ahrs_msg) == 228, "HIL2 sensor body size");
+    static_assert(offsetof(SensorWire, baro) == 0, "HIL2 baro offset");
+    static_assert(offsetof(SensorWire, mag) == 12, "HIL2 mag offset");
+    static_assert(offsetof(SensorWire, gps) == 24, "HIL2 GPS offset");
+    static_assert(offsetof(SensorWire, ins) == 80, "HIL2 IMU offset");
+    static_assert(offsetof(SensorWire, aspd) == 108, "HIL2 airspeed offset");
+    static_assert(offsetof(SensorWire, q1) == 116, "HIL2 quaternion offset");
+    static_assert(offsetof(SensorWire, efi) == 132, "HIL2 EFI offset");
+    static_assert(sizeof(EFI_State) == 96, "HIL2 EFI size");
+    static_assert(sizeof(_header) == 8 && sizeof(_footer) == 8, "HIL2 framing size");
 
 
     struct {

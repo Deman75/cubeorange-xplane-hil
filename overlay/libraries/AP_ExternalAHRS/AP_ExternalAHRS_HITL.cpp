@@ -62,7 +62,7 @@ void AP_ExternalAHRS_HITL::thread(void) {
         // find efi
 #if AP_EFI_SCRIPTING_ENABLED
         if (efi == nullptr) {
-            efi = AP::EFI()->get_backend(0);
+            efi = AP::EFI() != nullptr ? AP::EFI()->get_backend(0) : nullptr;
             if (efi != nullptr) {
                 GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HITL: EFI Enabled");
             }
@@ -135,7 +135,24 @@ void AP_ExternalAHRS_HITL::read(uint32_t t) {
             if (header.type != 0) { continue; }
             if (footer.len != sizeof(header) + sizeof(ahrs_msg)) { continue; }
             if (strncmp(footer.postamble, "END", 3) != 0) { continue; };
-            memcpy(&ahrs_msg, &buffer[sizeof(header)], sizeof(ahrs_msg));
+            SensorWire incoming;
+            memcpy(&incoming, &buffer[sizeof(header)], sizeof(incoming));
+            const float qnorm = sq(incoming.q1) + sq(incoming.q2) + sq(incoming.q3) + sq(incoming.q4);
+            // Reject corrupt/non-finite state before refreshing link health or publishing sensors.
+            if (!(incoming.baro.pressure_pa > 100.0f && incoming.baro.pressure_pa < 120000.0f) ||
+                !(incoming.baro.temperature > -100.0f && incoming.baro.temperature < 150.0f) ||
+                !(qnorm > 0.9f && qnorm < 1.1f) ||
+                !(incoming.ins.accel.length_squared() < 1.0e8f) ||
+                !(incoming.ins.gyro.length_squared() < 1.0e6f) ||
+                !(incoming.mag.field.length_squared() < 1.0e8f) ||
+                !(incoming.aspd.differential_pressure >= 0 && incoming.aspd.differential_pressure < 1.0e6f) ||
+                incoming.gps.latitude < -900000000 || incoming.gps.latitude > 900000000 ||
+                incoming.gps.longitude < -1800000000 || incoming.gps.longitude > 1800000000 ||
+                !isfinite(incoming.gps.ned_vel_north) || !isfinite(incoming.gps.ned_vel_east) ||
+                !isfinite(incoming.gps.ned_vel_down)) {
+                continue;
+            }
+            ahrs_msg = incoming;
             on_ahrs(t);
         }
     }
@@ -203,8 +220,13 @@ void AP_ExternalAHRS_HITL::push_efi() {
 // restart ahrs
 
 void AP_ExternalAHRS_HITL::on_reset() {
-    GCS_SEND_TEXT(MAV_SEVERITY_WARNING, "HITL: Reboot");
-    AP::vehicle()->reboot(false);
+    WITH_SEMAPHORE(state.sem);
+    state.have_origin = false;
+    state.have_location = false;
+    state.have_velocity = false;
+    state.have_quaternion = false;
+    on_ahrs_time = 0;
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HIL2: simulator state reset");
 }
 
 // rc

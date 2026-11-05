@@ -268,6 +268,22 @@ void AP_ExternalAHRS_HITL::send_rc() {
     uart->write(reinterpret_cast<uint8_t *>(&plane_msg), sizeof(plane_msg));
     footer.len = sizeof(header) + sizeof(plane_msg);
     uart->write(reinterpret_cast<uint8_t *>(&footer), sizeof(footer));
+
+    // Optional type 5 adds landing gear without changing the existing type 4 wire layout.
+    // Use the controller's output, not raw RC input, so RC6_OPTION/LGR settings apply.
+    uint16_t gear_pwm = 0;
+    if (SRV_Channels::get_output_pwm(SRV_Channel::k_landing_gear_control, gear_pwm) &&
+        gear_pwm >= 900 && gear_pwm <= 2100) {
+        struct {
+            uint16_t deployed;
+        } gear_msg { uint16_t(gear_pwm >= 1500) };
+        static_assert(sizeof(gear_msg) == 2, "Unexpected HIL2 gear wire layout");
+        header.type = 5;
+        uart->write(reinterpret_cast<uint8_t *>(&header), sizeof(header));
+        uart->write(reinterpret_cast<uint8_t *>(&gear_msg), sizeof(gear_msg));
+        footer.len = sizeof(header) + sizeof(gear_msg);
+        uart->write(reinterpret_cast<uint8_t *>(&footer), sizeof(footer));
+    }
 #endif
 #if APM_BUILD_TYPE(APM_BUILD_Heli)
     header.type = 3;

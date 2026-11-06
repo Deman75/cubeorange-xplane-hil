@@ -13,6 +13,7 @@
 #include <AP_InertialSensor/AP_InertialSensor.h>
 #include <GCS_MAVLink/GCS.h>
 #include <AP_BoardConfig/AP_BoardConfig.h>
+#include <RC_Channel/RC_Channel.h>
 
 extern const AP_HAL::HAL &hal;
 
@@ -284,6 +285,21 @@ void AP_ExternalAHRS_HITL::send_rc() {
         footer.len = sizeof(header) + sizeof(gear_msg);
         uart->write(reinterpret_cast<uint8_t *>(&footer), sizeof(footer));
     }
+    // Optional HIL2 type 6: symmetric service brakes from calibrated RC channel 9.
+    // No servo output assignment or RC9_OPTION is needed; do not consume RC8.
+    const RC_Channel *brake_channel = rc().channel(8);
+    const bool brake_input_valid = brake_channel != nullptr &&
+        rc().has_valid_input() && RC_Channels::get_valid_channel_count() >= 9;
+    struct { uint16_t ratio_x10000; } brake_msg {
+        uint16_t(brake_input_valid ? constrain_float(
+            (brake_channel->norm_input_ignore_trim()+1.0f)*5000.0f,0.0f,10000.0f) : 0)
+    };
+    static_assert(sizeof(brake_msg)==2, "Unexpected HIL2 brake wire layout");
+    header.type=6;
+    uart->write(reinterpret_cast<uint8_t *>(&header),sizeof(header));
+    uart->write(reinterpret_cast<uint8_t *>(&brake_msg),sizeof(brake_msg));
+    footer.len=sizeof(header)+sizeof(brake_msg);
+    uart->write(reinterpret_cast<uint8_t *>(&footer),sizeof(footer));
 #endif
 #if APM_BUILD_TYPE(APM_BUILD_Heli)
     header.type = 3;

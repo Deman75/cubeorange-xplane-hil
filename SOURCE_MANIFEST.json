@@ -12,7 +12,7 @@
     "libraries/AP_Airspeed/AP_Airspeed_External.h": "d05ec50105193ba6e7ec16bfc9f4678a4609db80ccfe969dd640ab593ecc545d",
     "libraries/AP_ExternalAHRS/AP_ExternalAHRS.cpp": "5dafda915b2a7e2ab3fda2ee44f9ee850bb5793b868bf615080ae108c3b97b79",
     "libraries/AP_ExternalAHRS/AP_ExternalAHRS.h": "7869733a934b9f57ed84366a0a38e31b2d008f2a2c2d5c536b62031e8632ce45",
-    "libraries/AP_ExternalAHRS/AP_ExternalAHRS_HITL.cpp": "d725907032647ad7e0ba5ed42d6afd28d94da2767dd1276c46c5d0c689802253",
+    "libraries/AP_ExternalAHRS/AP_ExternalAHRS_HITL.cpp": "ef3cb7aa01ce35cc7f1cd177c2c1e676eac2c0bff59cb808f1bcb8ef7f9073d7",
     "libraries/AP_ExternalAHRS/AP_ExternalAHRS_HITL.h": "7d3ce00dda2c59ea0852709f8661ae902bde49baf78375c2cf4e1a68f73e3227"
   }
 }

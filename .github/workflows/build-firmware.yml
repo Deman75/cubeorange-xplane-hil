@@ -35,7 +35,7 @@ jobs:
           manifest = json.loads(Path('SOURCE_MANIFEST.json').read_text())
           for name, expected in manifest['overlay'].items():
               source = Path('overlay') / name
-              assert name.startswith(('libraries/AP_ExternalAHRS/', 'libraries/AP_Airspeed/'))
+              assert name.startswith(('libraries/AP_ExternalAHRS/', 'libraries/AP_Airspeed/')) or name in ('libraries/APM_Control/AP_SteerController.cpp', 'libraries/APM_Control/AP_SteerController.h')
               assert '..' not in Path(name).parts
               assert hashlib.sha256(source.read_bytes()).hexdigest() == expected, name
               dest = Path('upstream') / name

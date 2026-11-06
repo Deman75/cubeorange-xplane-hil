@@ -3,6 +3,8 @@
   "driver_donor": "a35358a5f06996e771911904223274e3fb57b9c4",
   "status": "experimental; ARM build and hardware not yet validated",
   "overlay": {
+    "libraries/APM_Control/AP_SteerController.cpp": "5651686aab410c2e1be7b3a28756b31c13a608a610ece5f508b3b56f67941ef7",
+    "libraries/APM_Control/AP_SteerController.h": "5d31ead067f6be6c6173f08d5ae13a2c48e97019e7025bf0bc133a553aa63c38",
     "libraries/AP_Airspeed/AP_Airspeed.cpp": "770a50a9ea3088ccc2d1e7f368c6adceb6dc310e2f8dd26ede5450921bf3936f",
     "libraries/AP_Airspeed/AP_Airspeed.h": "5c6780939382c61a2ee2229a014f51d5235f7709d23bc41f032da84f1236e1b2",
     "libraries/AP_Airspeed/AP_Airspeed_Backend.h": "486cd7230e09f01fa22006e6e4c747f49179ba405cfd6646ae46b1f33061ad0d",

@@ -4,7 +4,9 @@ Build-only repository for a local prototype. It contains no aircraft geometry,
 aircraft files, photos, radio binding information, or calibrated vehicle parameters.
 
 The workflow fetches official ArduPlane 4.4.2 at the SHA in SOURCE_MANIFEST.json,
-then applies the ExternalAHRS and airspeed overlay. The donor is
+then applies the ExternalAHRS, airspeed and experimental steering overlay. Steering
+adds an opt-in STEER2SRV_RATE_P yaw-rate feedback gain, default zero (legacy behavior).
+This is an experimental controller change, not a validated flight release. The donor is
 [qgerman2/ardupilot-Simulink](https://github.com/qgerman2/ardupilot-Simulink).
 The donor's custom Simulink controller is **not** included.
 
